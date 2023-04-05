@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User, AbstractUser
+from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 from .managers import CustomUserManager
 
@@ -7,17 +7,16 @@ from .managers import CustomUserManager
 # custom user
 class CustomUser(AbstractUser):
     '''Custom user model with the required fields'''
-    # username = None
-    email = models.EmailField(_('email address'), unique=True)
+    email = models.EmailField(unique=True)
     first_name = models.TextField(max_length=200)
     last_name = models.TextField(max_length=200)
     age = models.IntegerField(blank=True)
     phone_number = models.TextField(blank=False)
 
-    # USERNAME_FIELD = email
-    REQUIRED_FIELDS = [first_name, phone_number]
-
     objects = CustomUserManager()
+    USERNAME_FIELD = 'email'
+
+    REQUIRED_FIELDS = ['first_name', 'phone_number', 'age']
 
     def __str__(self):
         return self.email
